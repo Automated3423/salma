@@ -64,7 +64,23 @@ a.book{background:#0b5b74;color:#fff;padding:8px 12px;border-radius:10px;text-de
 <script>
 const BOOKING_BASE_URL = "/book?branch=";
 let centers = [];
-fetch("centers.json").then(r=>r.json()).then(d=>{ centers=d; render(); });
+async function loadCenters(){
+  try{
+    const res = await fetch('centers.json', { cache: 'no-store' });
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    centers = await res.json();
+  }catch(e){
+    const $list = document.getElementById('list');
+    const $count = document.getElementById('count');
+    if($list && $count){
+      $list.innerHTML = '<div class="item"><div class="meta">تعذّر تحميل البيانات. حاول تحديث الصفحة. التفاصيل: '+e.message+'</div></div>';
+      $count.textContent = '';
+    }
+    return; // لا تكمل إن فشل التحميل
+  }
+  render();
+}
+loadCenters();
 
 let activeRegion=null, nearestMode=false, myPos=null;
 const $list=document.getElementById('list'), $count=document.getElementById('count'), $q=document.getElementById('q');
