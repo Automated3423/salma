@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>حفظ صوري (محليًا)</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#10b981">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>حفظ صوري (محليًا)</h1>
+    <div class="actions">
+      <label class="btn">
+        رفع صور
+        <input id="fileInput" type="file" accept="image/*" multiple hidden>
+      </label>
+      <label class="btn">
+        تصوير
+        <input id="cameraInput" type="file" accept="image/*" capture="environment" hidden>
+      </label>
+      <button id="exportBtn" class="btn">تصدير نسخة</button>
+      <label class="btn">
+        استيراد
+        <input id="importInput" type="file" accept="application/json" hidden>
+      </label>
+    </div>
+  </header>
+
+  <section id="dropZone">
+    <p>اسحب الصور هنا أو استخدم زر “رفع صور”.</p>
+  </section>
+
+  <section class="toolbar">
+    <input id="search" type="search" placeholder="ابحث بالاسم أو الملاحظات…">
+    <select id="sort">
+      <option value="newest">الأحدث أولًا</option>
+      <option value="oldest">الأقدم أولًا</option>
+      <option value="name">حسب الاسم</option>
+      <option value="size">حسب الحجم</option>
+    </select>
+  </section>
+
+  <main id="gallery" class="grid"></main>
+
+  <template id="cardTpl">
+    <article class="card">
+      <img class="thumb" alt="">
+      <div class="meta">
+        <input class="title" placeholder="اسم الصورة">
+        <textarea class="note" rows="2" placeholder="ملاحظات…"></textarea>
+        <div class="info"></div>
+      </div>
+      <div class="card-actions">
+        <a class="download btn-ghost" download>تنزيل</a>
+        <button class="delete btn-ghost">حذف</button>
+      </div>
+    </article>
+  </template>
+
+  <footer class="foot">
+    <small>التخزين محلي داخل هذا المتصفح. لإعادة الصور على جهاز آخر استخدم “تصدير/استيراد”.</small>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(console.warn);
+    }
+  </script>
+</body>
+</html>
