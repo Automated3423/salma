@@ -1,138 +1,73 @@
 <!doctype html>
-<html lang='ar' dir='rtl'>
+<html lang="ar" dir="rtl">
 <head>
-<meta charset='utf-8'/>
-<meta name='viewport' content='width=device-width, initial-scale=1'/>
-<title>مواقع الفحص الفني — السعودية</title>
-<link href='https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap' rel='stylesheet'>
-<style>
-:root{--bg:#f6f8fb;--card:#fff;--text:#0f172a;--muted:#6b7280;--brand:#0E5E7C;--accent:#18a999;--line:#e8edf3}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:'Tajawal',system-ui}
-.container{max-width:1100px;margin:auto;padding:24px}
-header{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:16px}
-.search{flex:1;min-width:260px;display:flex;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
-.search input{all:unset;direction:rtl;flex:1;font-size:15px}
-.btn{border:none;background:var(--brand);color:#fff;padding:10px 12px;border-radius:12px;cursor:pointer}
-.toolbar{display:flex;gap:10px;flex-wrap:wrap}
-.panel{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;margin-top:12px}
-@media (max-width:980px){.panel{grid-template-columns:1fr}}
-.map-card,.list-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;min-height:480px}
-.map-wrap{position:relative;aspect-ratio:16/11;background:linear-gradient(180deg,#eef5f9,#f9fbfc);border-radius:12px;border:1px dashed #dbe6ee}
-.region-chip{position:absolute;padding:8px 12px;border-radius:999px;background:var(--brand);color:#fff;font-size:14px;box-shadow:0 6px 16px rgba(14,94,124,.18);cursor:pointer;user-select:none;white-space:nowrap}
-.Riyadh{left:47%;top:50%}.Makkah{left:35%;top:70%}.Sharqiyah{left:70%;top:50%}.Qassim{left:45%;top:38%}.Bahah{left:40%;top:79%}.Asir{left:33%;top:83%}.Najran{left:45%;top:90%}.Jazan{left:26%;top:92%}.Hail{left:42%;top:28%}.Tabuk{left:26%;top:18%}.Madinah{left:33%;top:50%}.Hudud{left:50%;top:16%}.Jouf{left:40%;top:12%}
-.grid{display:grid;grid-template-columns:1fr;gap:10px}.item{border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;grid-template-columns:1fr auto;gap:8px}
-.item h3{margin:0;font-size:16px}.meta{font-size:13px;color:var(--muted)}.ops{display:flex;gap:8px;align-items:center}
-a.book{background:#0b5b74;color:#fff;padding:8px 12px;border-radius:10px;text-decoration:none}
-</style>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>حفظ صوري (محليًا)</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#10b981">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class='container'>
-  <header>
-    <label class='search' title='ابحث بالمنطقة/المدينة/المركز'>
-      <span style='margin-inline-end:8px;opacity:.6'>🔎</span>
-      <input id='q' placeholder='ابحث عن منطقة أو مدينة أو مركز' />
-    </label>
-    <button id='nearest' class='btn'>أقرب موقع لي</button>
-    <button id='clear' class='btn' style='background:#475569'>مسح</button>
+  <header class="topbar">
+    <h1>حفظ صوري (محليًا)</h1>
+    <div class="actions">
+      <label class="btn">
+        رفع صور
+        <input id="fileInput" type="file" accept="image/*" multiple hidden>
+      </label>
+      <label class="btn">
+        تصوير
+        <input id="cameraInput" type="file" accept="image/*" capture="environment" hidden>
+      </label>
+      <button id="exportBtn" class="btn">تصدير نسخة</button>
+      <label class="btn">
+        استيراد
+        <input id="importInput" type="file" accept="application/json" hidden>
+      </label>
+    </div>
   </header>
-  <section class='panel'>
-    <div class='map-card'>
-      <div class='map-wrap' id='map'>
-        <div class='region-chip Riyadh' data-region='الرياض'>الرياض</div>
-        <div class='region-chip Makkah' data-region='مكة المكرمة'>مكة المكرمة</div>
-        <div class='region-chip Sharqiyah' data-region='الشرقية'>الشرقية</div>
-        <div class='region-chip Qassim' data-region='القصيم'>القصيم</div>
-        <div class='region-chip Bahah' data-region='الباحة'>الباحة</div>
-        <div class='region-chip Asir' data-region='عسير'>عسير</div>
-        <div class='region-chip Najran' data-region='نجران'>نجران</div>
-        <div class='region-chip Jazan' data-region='جازان'>جازان</div>
-        <div class='region-chip Hail' data-region='حائل'>حائل</div>
-        <div class='region-chip Tabuk' data-region='تبوك'>تبوك</div>
-        <div class='region-chip Madinah' data-region='المدينة المنورة'>المدينة المنورة</div>
-        <div class='region-chip Hudud' data-region='الحدود الشمالية'>الحدود الشمالية</div>
-        <div class='region-chip Jouf' data-region='الجوف'>الجوف</div>
-      </div>
-    </div>
-    <div class='list-card'>
-      <div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:10px'>
-        <strong>المراكز</strong><span id='count' class='meta'></span>
-      </div>
-      <div id='list' class='grid'></div>
-    </div>
+
+  <section id="dropZone">
+    <p>اسحب الصور هنا أو استخدم زر “رفع صور”.</p>
   </section>
-</div>
-<script>
-const BOOKING_BASE_URL = "/book?branch=";
-let centers = [];
-async function loadCenters(){
-  try{
-    const res = await fetch('centers.json', { cache: 'no-store' });
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    centers = await res.json();
-  }catch(e){
-    const $list = document.getElementById('list');
-    const $count = document.getElementById('count');
-    if($list && $count){
-      $list.innerHTML = '<div class="item"><div class="meta">تعذّر تحميل البيانات. حاول تحديث الصفحة. التفاصيل: '+e.message+'</div></div>';
-      $count.textContent = '';
+
+  <section class="toolbar">
+    <input id="search" type="search" placeholder="ابحث بالاسم أو الملاحظات…">
+    <select id="sort">
+      <option value="newest">الأحدث أولًا</option>
+      <option value="oldest">الأقدم أولًا</option>
+      <option value="name">حسب الاسم</option>
+      <option value="size">حسب الحجم</option>
+    </select>
+  </section>
+
+  <main id="gallery" class="grid"></main>
+
+  <template id="cardTpl">
+    <article class="card">
+      <img class="thumb" alt="">
+      <div class="meta">
+        <input class="title" placeholder="اسم الصورة">
+        <textarea class="note" rows="2" placeholder="ملاحظات…"></textarea>
+        <div class="info"></div>
+      </div>
+      <div class="card-actions">
+        <a class="download btn-ghost" download>تنزيل</a>
+        <button class="delete btn-ghost">حذف</button>
+      </div>
+    </article>
+  </template>
+
+  <footer class="foot">
+    <small>التخزين محلي داخل هذا المتصفح. لإعادة الصور على جهاز آخر استخدم “تصدير/استيراد”.</small>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(console.warn);
     }
-    return; // لا تكمل إن فشل التحميل
-  }
-  render();
-}
-loadCenters();
-
-let activeRegion=null, nearestMode=false, myPos=null;
-const $list=document.getElementById('list'), $count=document.getElementById('count'), $q=document.getElementById('q');
-
-function toRad(x){return x*Math.PI/180}
-function km(a,b){const R=6371,dLat=toRad(b.lat-a.lat),dLng=toRad(b.lng-a.lng);
-  const s1=Math.sin(dLat/2)**2 + Math.cos(toRad(a.lat))*Math.cos(toRad(b.lat))*Math.sin(dLng/2)**2;
-  return 2*R*Math.asin(Math.sqrt(s1));}
-function bookingUrl(c){return BOOKING_BASE_URL+encodeURIComponent(c.branch);}
-
-function render(){
-  let data=centers.slice();
-  const term=($q.value||'').trim().toLowerCase();
-  if(activeRegion) data=data.filter(c=>c.region===activeRegion);
-  if(term) data=data.filter(c=>[c.region,c.city,c.branch,c.operator].some(v=>String(v).toLowerCase().includes(term)));
-  if(nearestMode && myPos){
-    data=data.map(c=>({...c,dist:km(myPos,{lat:c.lat,lng:c.lng})})).sort((a,b)=>a.dist-b.dist).slice(0,15);
-  }
-  $list.innerHTML='';
-  if(data.length===0){$list.innerHTML='<div class="item"><div class="meta">لا توجد نتائج مطابقة.</div></div>'}
-  else{
-    data.forEach(c=>{
-      const el=document.createElement('div'); el.className='item';
-      const dist=(c.dist!=null)?` • <strong>${c.dist.toFixed(1)} كم</strong>`:'';
-      el.innerHTML=`<div><h3>${c.branch} — <span class='meta' style='font-weight:500'>${c.city}</span></h3>
-        <div class='meta'>المنطقة: ${c.region} • المشغّل: ${c.operator}${dist}</div></div>
-        <div class='ops'><span class='meta'>${c.hours}</span><a class='book' href='${bookingUrl(c)}'>حجز موعد</a></div>`;
-      $list.appendChild(el);
-    });
-  }
-  $count.textContent=data.length+' مركز'+(data.length===1?'':'ًا');
-}
-
-document.querySelectorAll('.region-chip').forEach(chip=>{
-  chip.addEventListener('click',()=>{
-    const name=chip.dataset.region; nearestMode=false;
-    if(activeRegion===name){activeRegion=null; chip.classList.remove('active');}
-    else{activeRegion=name; document.querySelectorAll('.region-chip').forEach(c=>c.classList.remove('active')); chip.classList.add('active');}
-    render();
-  });
-});
-$q.addEventListener('input', render);
-document.getElementById('clear').addEventListener('click',()=>{activeRegion=null;nearestMode=false;myPos=null;$q.value='';document.querySelectorAll('.region-chip').forEach(c=>c.classList.remove('active'));render();});
-document.getElementById('nearest').addEventListener('click',()=>{
-  if(!navigator.geolocation){alert('المتصفح لا يدعم تحديد الموقع');return;}
-  navigator.geolocation.getCurrentPosition(p=>{
-    myPos={lat:p.coords.latitude,lng:p.coords.longitude};
-    activeRegion=null; nearestMode=true;
-    document.querySelectorAll('.region-chip').forEach(c=>c.classList.remove('active'));
-    render();
-  }, e=>alert('تعذّر الحصول على الموقع: '+e.message), {enableHighAccuracy:true,timeout:10000,maximumAge:0});
-});
-</script>
+  </script>
 </body>
 </html>
